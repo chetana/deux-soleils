@@ -1,7 +1,5 @@
 #!/bin/bash
-for u in "https://soleils.chetana.fr/" "https://soleils.chetana.fr/app.js" "https://soleils.chetana.fr/style.css"; do
-  code=$(curl -s -o /tmp/out.bin -w "%{http_code} %{size_download}" --max-time 25 "$u")
-  echo "$u -> HTTP $code"
-done
-echo "=== début du HTML ==="
-curl -s --max-time 25 https://soleils.chetana.fr/ | head -c 250
+echo "== noms de clés CF dans /opt/chet/env =="
+grep -ioE "^[A-Z0-9_]*(CLOUDFLARE|CF_)[A-Z0-9_]*" /opt/chet/env | sort -u
+echo "== fichiers mentionnant cloudflare =="
+grep -rlioE "cloudflare" /opt/chet --include="*.sh" --include="*.md" --include="*.yml" --include="*.example" 2>/dev/null | head -5
