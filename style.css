@@ -97,3 +97,22 @@ footer .fr{ font-family:var(--hand); color:var(--pink2); }
   .place{ flex:1 }
   .link{ display:none }
 }
+
+/* ---------- Phases du ciel (définies par app.js via data-phase) ---------- */
+.sky[data-phase="day"]{ background:linear-gradient(180deg,#3f7fd9 0%,#7db4ea 55%,#b8d4f2 100%); }
+.sky[data-phase="golden"]{ background:linear-gradient(180deg,#40518f 0%,#c96f8e 55%,#ffb36b 100%); }
+.sky[data-phase="night"]{ background:linear-gradient(180deg,#070b1e 0%,#101736 60%,#1b2350 100%); }
+.sky[data-phase="night"] .cloud{ opacity:.12; }
+.sky[data-phase="night"] .star{ opacity:1; }
+.sky[data-phase="day"] .star,
+.sky[data-phase="golden"] .star{ opacity:0; }
+
+/* Écart horaire Cambodge/France */
+.gapline{ margin-top:4px; color:var(--dim); font-size:.9rem; }
+.gapline b{ color:var(--gold); }
+.gapline .fr{ font-size:.82rem; }
+
+/* Apparition douce */
+header, .place, .link, footer{ animation:reveal .9s ease both; }
+.link{ animation-delay:.35s; }
+@keyframes reveal{ from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none} }
