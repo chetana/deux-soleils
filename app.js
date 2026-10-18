@@ -112,12 +112,13 @@ function updatePlace(k){
   if (isSun) phase = (f < .12 || f > .88) ? 'golden' : 'day';
   sky.dataset.phase = phase;
 
-  /* Point sur l'arc solaire */
+  /* Point sur l'arc solaire (viewBox 120x70, arc M10 62 Q60 -20 110 62) */
   var dot = document.getElementById('arcdot-'+k);
   if (dot){
     if (frac != null){
-      dot.setAttribute('cx', (10 + f*180).toFixed(1));
-      dot.setAttribute('cy', (62 - 52*Math.sin(Math.PI*f)).toFixed(1));
+      var t = Math.min(Math.max(frac, 0), 1), u = 1 - t;
+      dot.setAttribute('cx', (10 + t*100).toFixed(1));
+      dot.setAttribute('cy', (u*u*62 + 2*t*u*(-20) + t*t*62).toFixed(1));
       dot.style.opacity = 1;
     } else dot.style.opacity = 0;
   }
