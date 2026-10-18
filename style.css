@@ -138,6 +138,35 @@ body::after{ content:''; position:fixed; inset:0; z-index:999;
 
 /* ---------- Phases du ciel ---------- */
 /* (les dégradés pastel sont désormais portés par .sky::before, déplacé par le filtre craie) */
+
+/* ---------- Météo animée : pluie / neige / brume / orage ---------- */
+.wx-fx{ position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:3; }
+.drop{ position:absolute; top:-18px; width:2px; height:14px; border-radius:2px;
+  background:linear-gradient(180deg, rgba(120,150,190,0), rgba(90,120,170,.55));
+  animation:fall linear infinite; }
+.drop.storm{ width:2.5px; height:18px;
+  background:linear-gradient(180deg, rgba(80,100,150,0), rgba(70,95,150,.7)); }
+@keyframes fall{ from{ transform:translate(0,-18px) rotate(6deg); } to{ transform:translate(-6px,86px) rotate(6deg); } }
+.flake{ position:absolute; top:-8px; width:6px; height:6px; border-radius:50%;
+  background:rgba(255,255,255,.92); box-shadow:0 1px 2px rgba(255,255,255,.8);
+  animation:snowfall linear infinite; }
+@keyframes snowfall{ from{ transform:translate(0,-8px); } to{ transform:translate(-16px,82px); } }
+.fogbank{ position:absolute; inset:-12px;
+  background:linear-gradient(180deg, rgba(238,243,249,.9), rgba(238,243,249,.35));
+  animation:fogdrift 26s ease-in-out infinite alternate; }
+@keyframes fogdrift{ from{ transform:translateX(-5%); } to{ transform:translateX(5%); } }
+.flash{ position:absolute; inset:0; background:#fff; opacity:0; animation:flash 7s infinite; }
+@keyframes flash{ 0%,93%,96%,100%{ opacity:0; } 94%{ opacity:.55; } 95%{ opacity:.08; } }
+
+/* le ciel se grisote quand il pleut / neige / brume */
+.sky[data-wx="rain"]::before,
+.sky[data-wx="storm"]::before{ filter:url(#chalkSoft) saturate(.55) brightness(.88); }
+.sky[data-wx="fog"]::before{ filter:url(#chalkSoft) saturate(.35) brightness(.96); }
+.sky[data-wx="snow"]::before{ filter:url(#chalkSoft) saturate(.6) brightness(1.02); }
+.sky[data-wx="rain"] .cloud,
+.sky[data-wx="storm"] .cloud,
+.sky[data-wx="snow"] .cloud{ background:rgba(160,172,198,.8); }
+.sky[data-wx="fog"] .cloud{ opacity:.3; }
 .sky[data-phase="night"] .cloud{ opacity:.15; }
 .sky[data-phase="night"] .star{ opacity:1; }
 .sky[data-phase="day"] .star,

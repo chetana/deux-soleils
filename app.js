@@ -52,6 +52,41 @@ function minsToHM(v){
   return (h<10?'0':'')+h+':'+(m<10?'0':'')+m;
 }
 function wxLabel(code){ return WX[code] || ['🌡️','Météo','អាកាសធាតុ']; }
+function wxCat(code){
+  if (code == null) return null;
+  if (code <= 1) return 'clear';
+  if (code <= 3) return 'cloud';
+  if (code <= 48) return 'fog';
+  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return 'rain';
+  if (code >= 71 && code <= 77) return 'snow';
+  return 'storm';
+}
+function wxHeavy(code){ return [63,65,81,82,95,96,99].includes(code); }
+
+/* Particules météo dans le ciel de la carte (pluie/neige/brume/éclair) */
+function weatherFx(k){
+  var sky = document.getElementById('sky-'+k), st = state[k] || {}, cat = wxCat(st.code);
+  if (!sky || cat == null) return;
+  var heavy = wxHeavy(st.code);
+  if (sky.dataset.wx === cat && sky.dataset.heavy === String(heavy)) return;
+  sky.dataset.wx = cat; sky.dataset.heavy = String(heavy);
+  var old = document.getElementById('fx-'+k); if (old) old.remove();
+  if (RM) return;
+  var fx = document.createElement('div'); fx.id = 'fx-'+k; fx.className = 'wx-fx';
+  var n = cat === 'rain' ? (heavy ? 26 : 14) : cat === 'storm' ? 32 : cat === 'snow' ? 18 : 0;
+  for (var i = 0; i < n; i++){
+    var d = document.createElement('i');
+    d.className = cat === 'snow' ? 'flake' : (cat === 'storm' ? 'drop storm' : 'drop');
+    d.style.cssText = 'left:' + (Math.random()*100).toFixed(1) + '%;animation-duration:'
+      + (cat === 'snow' ? (4 + Math.random()*4) : (0.6 + Math.random()*(heavy ? 0.6 : 1.2))).toFixed(2)
+      + 's;animation-delay:' + (-Math.random()*3).toFixed(2) + 's'
+      + (cat === 'snow' ? ';opacity:' + (0.5 + Math.random()*0.5).toFixed(2) : '');
+    fx.appendChild(d);
+  }
+  if (cat === 'fog'){ var fb = document.createElement('i'); fb.className = 'fogbank'; fx.appendChild(fb); }
+  if (cat === 'storm'){ var fl = document.createElement('i'); fl.className = 'flash'; fx.appendChild(fl); }
+  sky.appendChild(fx);
+}
 
 /* Offset local du lieu en minutes (gère DST automatiquement) */
 function offsetMin(tz, d){
@@ -154,6 +189,7 @@ function paint(k){
   document.getElementById('temp-'+k).textContent = st.temp != null ? Math.round(st.temp) + '°C' : '—';
   document.getElementById('rise-'+k).textContent = minsToHM(st.rise);
   document.getElementById('set-'+k).textContent  = minsToHM(st.set);
+  weatherFx(k);
 }
 function apply(all){
   state = all;
