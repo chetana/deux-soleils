@@ -1,4 +1,4 @@
-/* Deux soleils — Montévrain ↔ Trapeang Ampil */
+/* Deux soleils — Montévrain ↔ Trapeang Ampil — layout compact sans scroll */
 :root{
   --pink:#ff7aa2; --pink2:#ff9db8; --gold:#ffd166; --bg:#0b1026;
   --card:#141a38; --line:#2a3358; --txt:#eef1ff; --dim:#9aa3c7;
@@ -6,99 +6,103 @@
   --hand:"Caveat",cursive;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{color-scheme:dark}
+html{color-scheme:dark;height:100%}
 body{
-  background:var(--bg); color:var(--txt); min-height:100dvh;
-  font-family:var(--khmer),system-ui,sans-serif; overflow-x:hidden;
+  height:100dvh; overflow:hidden;
+  background:var(--bg); color:var(--txt);
+  font-family:var(--khmer),system-ui,sans-serif;
+  display:flex; flex-direction:column;
+  padding:calc(env(safe-area-inset-top) + 6px) 10px calc(env(safe-area-inset-bottom) + 2px);
   background-image:radial-gradient(1200px 600px at 50% -10%, #1a2348 0%, transparent 60%);
 }
-[lang=km]{font-family:var(--khmer),system-ui,sans-serif;line-height:1.9}
+[lang=km]{font-family:var(--khmer),system-ui,sans-serif;line-height:1.7}
 .fr,.src{font-family:system-ui,sans-serif}
 
-header{ text-align:center; padding:clamp(18px,4vw,34px) 16px 6px; }
-header h1{ font-size:clamp(1.7rem,6vw,2.4rem); letter-spacing:.5px;
-  display:flex; flex-direction:column; gap:2px; align-items:center; }
-header h1 .fr{ font-family:var(--hand); font-size:.75em; color:var(--pink2); }
-.tagline{ color:var(--dim); font-size:.95rem; margin-top:6px; }
-
-main{ max-width:520px; margin:0 auto; padding:10px 14px 8px;
-  display:flex; flex-direction:column; }
+main{ flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; max-width:560px; width:100%; margin:0 auto; }
 
 /* ---------- Carte + ciel animé ---------- */
-.place{ border-radius:22px; overflow:hidden; border:1px solid var(--line);
-  background:var(--card); box-shadow:0 12px 34px rgba(0,0,0,.45); }
-.sky{ position:relative; height:148px; overflow:hidden;
+.place{ flex:1; min-height:0; display:flex; flex-direction:column;
+  border-radius:18px; overflow:hidden; border:1px solid var(--line);
+  background:var(--card); box-shadow:0 10px 30px rgba(0,0,0,.45); }
+.sky{ position:relative; height:72px; flex:none; overflow:hidden;
   transition:background 2.5s linear; }
 .stars{ position:absolute; inset:0; }
 .star{ position:absolute; background:#fff; border-radius:50%;
   opacity:0; animation:twinkle var(--d,3s) ease-in-out infinite; }
 @keyframes twinkle{ 0%,100%{opacity:.15; transform:scale(.7)} 50%{opacity:.9; transform:scale(1)} }
-.sunmoon{ position:absolute; width:46px; height:46px; border-radius:50%;
-  top:18px; left:calc(50% - 23px); filter:drop-shadow(0 0 18px rgba(255,209,102,.85));
-  transition:background 2.5s linear, box-shadow 2.5s linear; }
+.sunmoon{ position:absolute; width:34px; height:34px; border-radius:50%;
+  top:12px; left:calc(50% - 17px);
+  filter:drop-shadow(0 0 14px rgba(255,209,102,.85));
+  transition:background 2.5s linear; }
 .sunmoon.is-sun{ background:radial-gradient(circle at 35% 35%, #fff3c4, var(--gold) 60%, #ffb84d);
   animation:breathe 4s ease-in-out infinite; }
 .sunmoon.is-moon{ background:radial-gradient(circle at 62% 38%, #fdfdff 8%, #cfd6ea 42%, #8f97b8 78%);
-  filter:drop-shadow(0 0 12px rgba(220,228,255,.7)); animation:breathe 6s ease-in-out infinite; }
-@keyframes breathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.07)} }
+  filter:drop-shadow(0 0 10px rgba(220,228,255,.7)); animation:breathe 6s ease-in-out infinite; }
+@keyframes breathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
 .cloud{ position:absolute; background:rgba(255,255,255,.16); border-radius:40px;
-  width:90px; height:22px; top:24px; animation:drift 34s linear infinite; }
-.cloud::before{ content:""; position:absolute; background:inherit; width:42px; height:42px;
-  border-radius:50%; top:-20px; left:18px; }
-.cloud::after{ content:""; position:absolute; background:inherit; width:30px; height:30px;
-  border-radius:50%; top:-12px; left:52px; }
-.cloud.c2{ top:64px; width:64px; height:16px; opacity:.6; animation-duration:52s; animation-delay:-20s; }
-@keyframes drift{ from{left:-110px} to{left:110%} }
-.hill{ position:absolute; bottom:-28px; border-radius:50% 50% 0 0; }
-.hill.h1{ width:150%; left:-40%; height:60px; background:rgba(10,14,34,.55); }
-.hill.h2{ width:90%; right:-30%; height:44px; background:rgba(10,14,34,.8); }
+  width:64px; height:14px; top:12px; animation:drift 34s linear infinite; }
+.cloud::before{ content:""; position:absolute; background:inherit; width:28px; height:28px;
+  border-radius:50%; top:-13px; left:12px; }
+.cloud::after{ content:""; position:absolute; background:inherit; width:20px; height:20px;
+  border-radius:50%; top:-8px; left:36px; }
+.cloud.c2{ top:34px; width:44px; height:10px; opacity:.6; animation-duration:52s; animation-delay:-20s; }
+@keyframes drift{ from{left:-80px} to{left:110%} }
+.hill{ position:absolute; bottom:-20px; border-radius:50% 50% 0 0; }
+.hill.h1{ width:150%; left:-40%; height:38px; background:rgba(10,14,34,.55); }
+.hill.h2{ width:90%; right:-30%; height:30px; background:rgba(10,14,34,.8); }
 
-.card{ padding:14px 16px 16px; }
-.place-head h2{ font-family:system-ui,sans-serif; font-size:1.15rem; }
-.place-head .flag{ font-size:1.05rem; }
-.place-head .sub{ color:var(--dim); font-size:.85rem; }
+.card{ flex:1; min-height:0; display:flex; flex-direction:column; justify-content:space-between;
+  padding:8px 14px 10px; }
 
-/* horloge */
-.clock{ display:flex; align-items:baseline; gap:6px; margin:6px 0 2px;
+/* head-row : drapeau + nom à gauche, horloge à droite */
+.head-row{ display:flex; align-items:center; gap:10px; }
+.flag{ width:1.9em; height:1.4em; font-size:1rem; border-radius:3px; flex:none;
+  box-shadow:0 1px 3px rgba(0,0,0,.4); }
+.names{ flex:1; min-width:0; }
+.names h2{ font-family:system-ui,sans-serif; font-size:1.02rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.names .sub{ color:var(--dim); font-size:.72rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.clock{ display:flex; align-items:baseline; gap:4px; flex:none;
   font-family:"SF Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
   font-variant-numeric:tabular-nums; }
-.time{ font-size:clamp(2.6rem,13vw,3.4rem); font-weight:700; letter-spacing:1px;
-  color:#fff; text-shadow:0 2px 18px rgba(255,122,162,.35); }
-.sec{ font-size:1.1rem; color:var(--pink2); }
-.status{ color:var(--gold); font-size:1rem; margin-top:2px; }
-.status-fr{ font-family:var(--hand); color:var(--dim); font-size:1.15rem; }
+.time{ font-size:clamp(1.7rem,7.5vw,2.3rem); font-weight:700; letter-spacing:.5px;
+  color:#fff; text-shadow:0 2px 14px rgba(255,122,162,.35); }
+.sec{ font-size:.85rem; color:var(--pink2); }
+
+.status{ color:var(--gold); font-size:.92rem; line-height:1.5; }
+.status-fr{ font-family:var(--hand); color:var(--dim); font-size:1.05rem; line-height:1.2; }
 
 /* météo + soleils */
-.meta{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:8px; margin-top:12px; }
+.meta{ display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:6px; margin-top:6px; }
 .meta-item{ background:rgba(255,255,255,.05); border:1px solid var(--line);
-  border-radius:14px; padding:8px 10px; display:flex; flex-direction:column; gap:2px; }
-.mi-label{ font-size:.78rem; color:var(--dim); }
-.mi-val{ font-family:system-ui,sans-serif; font-size:.98rem; display:flex; align-items:center; gap:4px; }
+  border-radius:11px; padding:5px 8px; display:flex; flex-direction:column; gap:1px; min-width:0; }
+.mi-label{ font-size:.68rem; color:var(--dim); }
+.mi-val{ font-family:system-ui,sans-serif; font-size:.88rem; display:flex; align-items:center; gap:4px; white-space:nowrap; }
 .mi-val b{ font-weight:600; }
-.ico{ font-size:1.05rem }
+.ico{ font-size:.9rem }
 
-/* arc solaire */
-.arc{ margin-top:12px; color:var(--gold); }
-.arc svg{ width:100%; height:auto; display:block; }
-.arc circle{ fill:var(--gold); stroke:#fff; stroke-width:1.5;
-  filter:drop-shadow(0 0 6px rgba(255,209,102,.9)); }
-
-/* lien entre les deux cartes */
-.link{ display:flex; justify-content:center; padding:6px 0; }
+/* lien entre les cartes : avion + écart horaire */
+.link{ flex:none; display:flex; align-items:center; justify-content:center; gap:8px; padding:0; }
 #mini-plane{ animation:plane 6s ease-in-out infinite alternate; }
-@keyframes plane{ from{transform:translate(8px,30px)} to{transform:translate(42px,20px)} }
+@keyframes plane{ from{transform:translate(8px,16px)} to{transform:translate(42px,10px)} }
+.gapline{ color:var(--dim); font-size:.85rem; display:inline-flex; align-items:center; gap:4px; }
+.gapline b{ color:var(--gold); }
+.gapline .fi{ width:1.1em; height:.8em; border-radius:2px; }
 
-footer{ text-align:center; padding:20px 16px 26px; color:var(--dim); font-size:.95rem; }
-footer .fr{ font-family:var(--hand); color:var(--pink2); }
-.src{ font-size:.72rem; opacity:.7; margin-top:6px; }
+footer{ flex:none; text-align:center; padding:4px 0 2px; color:var(--dim); font-size:.8rem; }
+footer .src{ font-size:.62rem; opacity:.7; margin-left:6px; }
 
+/* ---------- Desktop : côte à côte ---------- */
 @media (min-width:720px){
-  main{ max-width:900px; flex-direction:row; align-items:flex-start; gap:14px; }
+  body{ padding-top:20px; }
+  main{ max-width:980px; flex-direction:row; gap:14px; }
   .place{ flex:1 }
-  .link{ display:none }
+  .sky{ height:110px }
+  .time{ font-size:clamp(2rem,3.4vw,2.6rem) }
+  .link{ flex-direction:column; flex:0 0 120px; justify-content:center; }
+  .gapline{ flex-direction:column; text-align:center; }
 }
 
-/* ---------- Phases du ciel (définies par app.js via data-phase) ---------- */
+/* ---------- Phases du ciel ---------- */
 .sky[data-phase="day"]{ background:linear-gradient(180deg,#3f7fd9 0%,#7db4ea 55%,#b8d4f2 100%); }
 .sky[data-phase="golden"]{ background:linear-gradient(180deg,#40518f 0%,#c96f8e 55%,#ffb36b 100%); }
 .sky[data-phase="night"]{ background:linear-gradient(180deg,#070b1e 0%,#101736 60%,#1b2350 100%); }
@@ -107,12 +111,6 @@ footer .fr{ font-family:var(--hand); color:var(--pink2); }
 .sky[data-phase="day"] .star,
 .sky[data-phase="golden"] .star{ opacity:0; }
 
-/* Écart horaire Cambodge/France */
-.gapline{ margin-top:4px; color:var(--dim); font-size:.9rem; }
-.gapline b{ color:var(--gold); }
-.gapline .fr{ font-size:.82rem; }
-
-/* Apparition douce */
-header, .place, .link, footer{ animation:reveal .9s ease both; }
-.link{ animation-delay:.35s; }
-@keyframes reveal{ from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none} }
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01s !important; animation-iteration-count:1 !important; transition:none !important}
+}

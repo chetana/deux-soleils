@@ -1,2 +1,5 @@
 #!/bin/bash
-curl -sk -o /dev/null -w "ORIGINE og-2026: %{http_code} (%{size_download} octets)\n" --max-time 20 --resolve "soleils.chetana.fr:443:163.172.7.239" "https://soleils.chetana.fr/og-2026.jpg"
+echo "=== HTML via CF : og:image ==="
+curl -s --max-time 20 "https://soleils.chetana.fr/" | grep -oE 'og:image" content="[^"]*"'
+echo "=== og-2026 via CF ==="
+curl -s -o /dev/null -w "HTTP %{http_code} (%{size_download} octets)\n" --max-time 20 "https://soleils.chetana.fr/og-2026.jpg"

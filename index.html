@@ -4,7 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b1026">
-<meta name="description" content="Deux soleils — les heures, le temps et les levers/couchers de soleil entre Montévrain 🇫🇷 et Trapeang Ampil 🇰🇭">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Deux soleils">
+<meta name="description" content="Deux soleils — les heures, le temps et les levers/couchers de soleil entre Montévrain et Trapeang Ampil">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Deux soleils ☀️">
 <meta property="og:title" content="Deux soleils — Montévrain ↔ Trapeang Ampil">
@@ -19,14 +23,10 @@
 <title>Deux soleils ☀️ Montévrain ↔ Trapeang Ampil</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%80%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Noto+Sans+Khmer:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.5.0/css/flag-icons.min.css">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
-
-<header>
-  <h1><span lang="km">ពន្លឺពីរ</span><span class="fr">Deux soleils</span></h1>
-  <p class="tagline" lang="km">ម៉ោង និង ពន្លឺថ្ងៃ នៃគ្រួសារយើង 💛</p>
-</header>
 
 <main>
   <!-- Carte France -->
@@ -38,12 +38,15 @@
       <div class="hill h1"></div><div class="hill h2"></div>
     </div>
     <div class="card">
-      <div class="place-head">
-        <h2>Montévrain <span class="flag">🇫🇷</span></h2>
-        <p class="sub" lang="km">ម៉ុងតេវ្រែន ស៊ែន អេ ម៉ារន</p>
-      </div>
-      <div class="clock">
-        <span class="time" id="time-fr">--:--</span><span class="sec" id="sec-fr">--</span>
+      <div class="head-row">
+        <span class="fi fi-fr flag" aria-hidden="true"></span>
+        <div class="names">
+          <h2>Montévrain</h2>
+          <p class="sub" lang="km">ម៉ុងតេវ្រែន · ស៊ែន អេ ម៉ារន</p>
+        </div>
+        <div class="clock">
+          <span class="time" id="time-fr">--:--</span><span class="sec" id="sec-fr">--</span>
+        </div>
       </div>
       <p class="status" lang="km" id="status-fr">…</p>
       <p class="status-fr" id="statusfr-fr">…</p>
@@ -61,20 +64,15 @@
           <span class="mi-val"><span class="ico">🌇</span> <b id="set-fr">--:--</b></span>
         </div>
       </div>
-      <div class="arc">
-        <svg viewBox="0 0 200 70" aria-hidden="true">
-          <path d="M10 62 Q100 -10 190 62" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 5" opacity=".5"/>
-          <circle id="arcdot-fr" r="6" cx="-10" cy="62"/>
-        </svg>
-      </div>
     </div>
   </section>
 
   <div class="link" aria-hidden="true">
-    <svg viewBox="0 0 60 60" width="46" height="46">
-      <path id="arc-line" d="M8 30 Q30 6 52 30" fill="none" stroke="#ff7aa2" stroke-width="2.5" stroke-dasharray="4 6" stroke-linecap="round"/>
+    <svg viewBox="0 0 60 40" width="40" height="28">
+      <path d="M6 20 Q30 -6 54 20" fill="none" stroke="#ff7aa2" stroke-width="2.5" stroke-dasharray="4 6" stroke-linecap="round"/>
       <g id="mini-plane"><path d="M2 0L-9-5 -6.5 0 -9 5Z" fill="#ff7aa2"/></g>
     </svg>
+    <span class="gapline" id="gapline" lang="km">…</span>
   </div>
 
   <!-- Carte Cambodge -->
@@ -86,12 +84,15 @@
       <div class="hill h1"></div><div class="hill h2"></div>
     </div>
     <div class="card">
-      <div class="place-head">
-        <h2>Trapeang Ampil <span class="flag">🇰🇭</span></h2>
-        <p class="sub" lang="km">ត្រពាំងអំពិល · ស្រុកសំរោងទង · កំពង់ស្ពឺ</p>
-      </div>
-      <div class="clock">
-        <span class="time" id="time-kh">--:--</span><span class="sec" id="sec-kh">--</span>
+      <div class="head-row">
+        <span class="fi fi-kh flag" aria-hidden="true"></span>
+        <div class="names">
+          <h2>Trapeang Ampil</h2>
+          <p class="sub" lang="km">ត្រពាំងអំពិល · ស្រុកសំរោងទង · កំពង់ស្ពឺ</p>
+        </div>
+        <div class="clock">
+          <span class="time" id="time-kh">--:--</span><span class="sec" id="sec-kh">--</span>
+        </div>
       </div>
       <p class="status" lang="km" id="status-kh">…</p>
       <p class="status-fr" id="statusfr-kh">…</p>
@@ -109,21 +110,12 @@
           <span class="mi-val"><span class="ico">🌇</span> <b id="set-kh">--:--</b></span>
         </div>
       </div>
-      <div class="arc">
-        <svg viewBox="0 0 200 70" aria-hidden="true">
-          <path d="M10 62 Q100 -10 190 62" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 5" opacity=".5"/>
-          <circle id="arcdot-kh" r="6" cx="-10" cy="62"/>
-        </svg>
-      </div>
     </div>
   </section>
 </main>
 
-<footer lang="km">
-  ធ្វើដោយក្តីស្រឡាញ់ សម្រាប់ម៉ែ 💖 <span class="fr">· fait avec amour pour maman</span>
-  <p class="src" id="updated">—</p>
-</footer>
+<footer lang="km">ធ្វើដោយក្តីស្រឡាញ់ សម្រាប់ម៉ែ 💖 <span class="src" id="updated">—</span></footer>
 
-<script src="app.js?v=1"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>

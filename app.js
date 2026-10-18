@@ -105,7 +105,7 @@ function updatePlace(k){
   orb.classList.toggle('is-sun', isSun);
   orb.classList.toggle('is-moon', !isSun);
   orb.style.left = (8 + f*84) + '%';
-  orb.style.top  = (96 - Math.sin(Math.PI*f)*78) + 'px';
+  orb.style.top  = (8 + (1 - Math.sin(Math.PI*f))*30) + 'px';
 
   /* Phase du ciel : nuit / dorée (lever-coucher) / jour */
   var phase = 'night';
@@ -139,17 +139,11 @@ function makeStars(k){
   box.appendChild(frag);
 }
 
-/* Écart horaire dynamique Cambodge - France (5h été / 6h hiver) */
+/* Écart horaire dynamique Cambodge - France (5h été / 6h hiver) — compact */
 function showGap(){
   var g = offsetMin(PLACES.kh.tz) - offsetMin(PLACES.fr.tz);
   var el = document.getElementById('gapline');
-  if (!el){
-    el = document.createElement('p');
-    el.id = 'gapline'; el.lang = 'km';
-    document.querySelector('#kh .card').insertBefore(el, document.querySelector('#kh .meta'));
-  }
-  el.innerHTML = 'គម្លាតម៉ោង : <b>' + (g >= 0 ? '+' : '') + (g/60) + ' ម៉ោង</b>'
-    + ' <span class="fr">· écart Cambodge/France (automatique, heure été/hiver)</span>';
+  if (el) el.innerHTML = '<span class="fi fi-kh"></span> = <span class="fi fi-fr"></span> <b>+' + (g/60) + 'h</b>';
 }
 
 /* Météo Open-Meteo (gratuite, sans clé, CORS ouvert) + cache 10 min */
