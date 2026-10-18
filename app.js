@@ -245,6 +245,11 @@ window.addEventListener('online', function(){ clearTimeout(fetchTimer); fetchWea
 window.addEventListener('offline', function(){ setNet(false); });
 
 /* Boot */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
 makeStars('fr'); makeStars('kh');
 updatePlace('fr'); updatePlace('kh');
 showGap();
