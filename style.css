@@ -99,12 +99,13 @@ main{ flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; max-wi
 .gapline b{ color:var(--gold); }
 .gapline .fi{ width:1.1em; height:.8em; border-radius:2px; }
 
-footer{ flex:none; text-align:center; padding:4px 0 2px; color:var(--dim); font-size:.9rem; }
+footer{ display:none; }
 footer .src{ font-size:.7rem; opacity:.7; margin-left:6px; }
 
 /* ---------- Desktop : côte à côte ---------- */
 @media (min-width:720px){
   body{ padding-top:20px; }
+  footer{ display:block; flex:none; }
   main{ max-width:980px; flex-direction:row; gap:14px; }
   .place{ flex:1 }
   .sky{ height:130px }
