@@ -2,7 +2,7 @@
    - navigations : network-first, repli sur le cache (HTML toujours frais si en ligne)
    - assets       : cache-first puis revalidation en arrière-plan (stale-while-revalidate)
    - la météo reste gérée par app.js (localStorage + retry), le SW n'y touche pas */
-const CACHE = 'deux-soleils-v1';
+const CACHE = 'deux-soleils-v2';
 const ASSETS = [
   './',
   './index.html',

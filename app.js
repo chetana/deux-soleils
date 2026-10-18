@@ -34,7 +34,7 @@ var WX = {
 
 var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 var state = { fr:{}, kh:{} };
-var CACHE_KEY = 'deux-soleils-v1';
+var CACHE_KEY = 'deux-soleils-v2';
 
 function fmt(tz, opts, d){
   try { return new Intl.DateTimeFormat('fr-FR', Object.assign({timeZone:tz}, opts)).format(d || new Date()); }
@@ -139,6 +139,9 @@ function updatePlace(k){
 
   orb.classList.toggle('is-sun', isSun);
   orb.classList.toggle('is-moon', !isSun);
+  /* La nuit, l'arc devient un parcours de lune (argenté) au lieu du parcours doré */
+  var sp = document.getElementById('sunpath-' + k);
+  if (sp) sp.classList.toggle('night', !isSun);
   orb.style.left = (8 + f*84) + '%';
   orb.style.top  = (8 + (1 - Math.sin(Math.PI*f))*30) + 'px';
 
