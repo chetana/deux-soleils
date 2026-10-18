@@ -1,1 +1,11 @@
-node_modulesnog-toolsn
+node_modules
+og-tools
+.gemini.env
+rapport/
+check-live.sh
+remote.sh
+remote-secrets.sh.py
+deploy.sh
+test-api.sh
+check-tools.py
+
