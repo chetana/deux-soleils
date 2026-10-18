@@ -95,6 +95,7 @@ main{ flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; max-wi
 
 /* lien entre les cartes : avion + écart horaire */
 .link{ flex:none; display:flex; align-items:center; justify-content:center; gap:8px; padding:0; }
+.link svg{ filter:url(#chalkEdge); }
 #mini-plane{ animation:plane 6s ease-in-out infinite alternate; }
 @keyframes plane{ from{transform:translate(8px,16px)} to{transform:translate(42px,10px)} }
 .gapline{ color:var(--dim); font-size:1rem; font-weight:600; display:inline-flex; align-items:center; gap:4px; }
@@ -120,10 +121,23 @@ footer .src{ font-size:.7rem; opacity:.7; margin-left:6px; }
   .gapline{ flex-direction:column; text-align:center; }
 }
 
-/* ---------- Phases du ciel (pastel) ---------- */
-.sky[data-phase="day"]{ background:linear-gradient(180deg,#8fc3ec 0%,#b9dcf5 55%,#dff0fc 100%); }
-.sky[data-phase="golden"]{ background:linear-gradient(180deg,#9aa5d8 0%,#e8b8c8 55%,#fbdcc0 100%); }
-.sky[data-phase="night"]{ background:linear-gradient(180deg,#4d5a96 0%,#6874ae 60%,#8d96c4 100%); }
+/* ---------- Effet pastel / dessin à la craie ---------- */
+/* aplat du ciel déplacé (façon pastel posé à la main) */
+.sky{ background:none !important; }
+.sky::before{ content:''; position:absolute; inset:-10px; filter:url(#chalkSoft);
+  background:linear-gradient(180deg,#8fc3ec 0%,#b9dcf5 55%,#dff0fc 100%); }
+.sky[data-phase="golden"]::before{ background:linear-gradient(180deg,#9aa5d8 0%,#e8b8c8 55%,#fbdcc0 100%); }
+.sky[data-phase="night"]::before{ background:linear-gradient(180deg,#4d5a96 0%,#6874ae 60%,#8d96c4 100%); }
+.sunmoon{ filter:url(#chalkEdge) drop-shadow(0 0 10px rgba(250,220,150,.55)); }
+.cloud{ filter:url(#chalkEdge); }
+.hill{ filter:url(#chalkSoft); }
+.sunpath path{ filter:url(#chalkEdge); }
+/* grain papier global très léger */
+body::after{ content:''; position:fixed; inset:0; z-index:999;
+  pointer-events:none; opacity:.06; mix-blend-mode:multiply; filter:url(#paper); }
+
+/* ---------- Phases du ciel ---------- */
+/* (les dégradés pastel sont désormais portés par .sky::before, déplacé par le filtre craie) */
 .sky[data-phase="night"] .cloud{ opacity:.15; }
 .sky[data-phase="night"] .star{ opacity:1; }
 .sky[data-phase="day"] .star,
