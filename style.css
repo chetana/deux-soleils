@@ -1,7 +1,7 @@
 /* Deux soleils — Montévrain ↔ Trapeang Ampil — layout compact sans scroll */
 :root{
-  --pink:#e0558a; --pink2:#c2407a; --gold:#b07d10; --bg:#cfe7fa;
-  --card:#f4f9ff; --line:#b9d3ec; --txt:#16294f; --dim:#5a6f93;
+  --pink:#d98fae; --pink2:#c97a9d; --gold:#b8934a; --bg:#e3f1fb;
+  --card:#fdfcff; --line:#d5e3f2; --txt:#3d4f73; --dim:#7d8bab;
   --khmer:"Noto Sans Khmer","Khmer OS",sans-serif;
   --hand:"Caveat",cursive;
 }
@@ -13,7 +13,7 @@ body{
   font-family:var(--khmer),system-ui,sans-serif;
   display:flex; flex-direction:column;
   padding:calc(env(safe-area-inset-top) + 6px) 10px calc(env(safe-area-inset-bottom) + 2px);
-  background-image:linear-gradient(180deg,#a8d4f5 0%,#cfe7fa 45%,#eaf4fd 100%);
+  background-image:linear-gradient(180deg,#cbe4f8 0%,#e8f2fc 45%,#fdf4f0 100%);
 }
 
 [lang=km]{font-family:var(--khmer),system-ui,sans-serif;line-height:1.7}
@@ -24,7 +24,7 @@ main{ flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; max-wi
 /* ---------- Carte + ciel animé ---------- */
 .place{ flex:1; min-height:0; display:flex; flex-direction:column;
   border-radius:18px; overflow:hidden; border:1px solid var(--line);
-  background:var(--card); box-shadow:0 10px 30px rgba(30,60,110,.18); }
+  background:var(--card); box-shadow:0 10px 30px rgba(120,150,190,.16); }
 .sky{ position:relative; height:72px; flex:none; overflow:hidden;
   transition:background 2.5s linear; }
 .stars{ position:absolute; inset:0; }
@@ -33,12 +33,12 @@ main{ flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; max-wi
 @keyframes twinkle{ 0%,100%{opacity:.15; transform:scale(.7)} 50%{opacity:.9; transform:scale(1)} }
 .sunmoon{ position:absolute; width:34px; height:34px; border-radius:50%;
   top:12px; left:calc(50% - 17px);
-  filter:drop-shadow(0 0 14px rgba(255,209,102,.85));
+  filter:drop-shadow(0 0 12px rgba(250,220,150,.6));
   transition:background 2.5s linear; }
-.sunmoon.is-sun{ background:radial-gradient(circle at 35% 35%, #fff3c4, var(--gold) 60%, #ffb84d);
+.sunmoon.is-sun{ background:radial-gradient(circle at 35% 35%, #fff8e3, #ffe3a8 60%, #f7c988);
   animation:breathe 4s ease-in-out infinite; }
-.sunmoon.is-moon{ background:radial-gradient(circle at 62% 38%, #fdfdff 8%, #cfd6ea 42%, #8f97b8 78%);
-  filter:drop-shadow(0 0 10px rgba(220,228,255,.7)); animation:breathe 6s ease-in-out infinite; }
+.sunmoon.is-moon{ background:radial-gradient(circle at 62% 38%, #fbfcff 8%, #e3e8f5 42%, #b9c1dd 78%);
+  filter:drop-shadow(0 0 10px rgba(215,222,245,.6)); animation:breathe 6s ease-in-out infinite; }
 @keyframes breathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
 .cloud{ position:absolute; background:rgba(255,255,255,.75); border-radius:40px;
   width:64px; height:14px; top:12px; animation:drift 34s linear infinite; }
@@ -49,8 +49,8 @@ main{ flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; max-wi
 .cloud.c2{ top:34px; width:44px; height:10px; opacity:.6; animation-duration:52s; animation-delay:-20s; }
 @keyframes drift{ from{left:-80px} to{left:110%} }
 .hill{ position:absolute; bottom:-20px; border-radius:50% 50% 0 0; }
-.hill.h1{ width:150%; left:-40%; height:38px; background:rgba(90,130,80,.35); }
-.hill.h2{ width:90%; right:-30%; height:30px; background:rgba(60,95,60,.5); }
+.hill.h1{ width:150%; left:-40%; height:38px; background:rgba(168,200,160,.45); }
+.hill.h2{ width:90%; right:-30%; height:30px; background:rgba(140,175,135,.55); }
 
 .card{ flex:1; min-height:0; display:flex; flex-direction:column; justify-content:space-between;
   padding:8px 14px 10px; }
@@ -67,23 +67,23 @@ main{ flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; max-wi
   font-family:"SF Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
   font-variant-numeric:tabular-nums; }
 .time{ font-size:clamp(2.1rem,9vw,2.9rem); font-weight:700; letter-spacing:.5px;
-  color:#12275c; text-shadow:0 1px 0 rgba(255,255,255,.6); }
+  color:#33456e; text-shadow:0 1px 0 rgba(255,255,255,.7); }
 .sec{ font-size:1.05rem; color:var(--pink2); font-weight:600; }
 
 /* statut du jour avec arc solaire à droite (proportions préservées) */
 .statusbox{ position:relative; display:flex; align-items:center; gap:8px;
   border-radius:14px; padding:10px 6px 10px 16px;
-  background:rgba(255,255,255,.5); border:1px solid var(--line);
+  background:rgba(255,251,245,.75); border:1px solid var(--line);
   overflow:hidden; margin-top:8px; }
 .sunpath{ flex:none; width:96px; height:64px; }
-.sunpath circle{ filter:drop-shadow(0 0 6px rgba(245,166,35,.9)); }
+.sunpath circle{ filter:drop-shadow(0 0 5px rgba(242,188,116,.7)); }
 .status-text{ flex:1; min-width:0; }
-.status{ color:#8a6210; font-size:1.22rem; line-height:1.6; font-weight:600; }
+.status{ color:#96742c; font-size:1.22rem; line-height:1.6; font-weight:600; }
 .status-fr{ font-family:var(--hand); color:var(--dim); font-size:1.3rem; line-height:1.15; }
 
 /* météo + soleils : météo pleine largeur, lever/coucher en demi-cartes */
 .meta{ display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:8px; }
-.meta-item{ background:rgba(255,255,255,.75); border:1px solid var(--line);
+.meta-item{ background:rgba(255,253,250,.8); border:1px solid var(--line);
   border-radius:12px; padding:8px 12px; display:flex; flex-direction:column; gap:2px; min-width:0;
   box-shadow:0 1px 3px rgba(30,60,110,.08); }
 .meta-item.wide{ grid-column:1 / -1; flex-direction:row; align-items:center; justify-content:space-between; }
@@ -120,11 +120,11 @@ footer .src{ font-size:.7rem; opacity:.7; margin-left:6px; }
   .gapline{ flex-direction:column; text-align:center; }
 }
 
-/* ---------- Phases du ciel ---------- */
-.sky[data-phase="day"]{ background:linear-gradient(180deg,#3f7fd9 0%,#7db4ea 55%,#b8d4f2 100%); }
-.sky[data-phase="golden"]{ background:linear-gradient(180deg,#40518f 0%,#c96f8e 55%,#ffb36b 100%); }
-.sky[data-phase="night"]{ background:linear-gradient(180deg,#070b1e 0%,#101736 60%,#1b2350 100%); }
-.sky[data-phase="night"] .cloud{ opacity:.12; }
+/* ---------- Phases du ciel (pastel) ---------- */
+.sky[data-phase="day"]{ background:linear-gradient(180deg,#8fc3ec 0%,#b9dcf5 55%,#dff0fc 100%); }
+.sky[data-phase="golden"]{ background:linear-gradient(180deg,#9aa5d8 0%,#e8b8c8 55%,#fbdcc0 100%); }
+.sky[data-phase="night"]{ background:linear-gradient(180deg,#4d5a96 0%,#6874ae 60%,#8d96c4 100%); }
+.sky[data-phase="night"] .cloud{ opacity:.15; }
 .sky[data-phase="night"] .star{ opacity:1; }
 .sky[data-phase="day"] .star,
 .sky[data-phase="golden"] .star{ opacity:0; }
