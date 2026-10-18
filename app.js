@@ -10,14 +10,14 @@ var PLACES = {
 
 /* Statuts contextuels [debut, fin[, kh, fr] — heure locale du lieu */
 var SLOTS = [
-  [ 5,  7, 'បានភ្ញាក់ពីដេក ពន្លឺព្រឹកថ្មី 🌅',  'Le soleil se lève, nouvelle journée 🌅'],
+  [ 5,  7, 'ព្រះអាទិត្យរះហើយ ថ្ងៃថ្មីមកដល់ 🌅',  'Le soleil se lève, nouvelle journée 🌅'],
   [ 7,  9, 'អាហារព្រឹក និងរៀបចំខ្លួន ☕',     'Petit-déjeuner, on se prépare ☕'],
-  [ 9, 12, 'ពេលព្រឹក ធ្វើការងារ 💪',            'Bon matin, au travail 💪'],
+  [ 9, 12, 'ពេលព្រឹកហើយ តោះធ្វើការងារ 💪',            'Bon matin, au travail 💪'],
   [12, 14, 'អាហារថ្ងៃត្រង់ និងសម្រាក 🍚',       'Déjeuner et pause méritée 🍚'],
-  [14, 17, 'ពេលរសៀល បន្តកិច្ចការ ☀️',            'Bel après-midi ☀️'],
-  [17, 19, 'ថ្ងៃលិច ពេលស៊ីបាយល្ហឹម 🌇',         'Le soleil se couche, c\'est l\'heure du dîner 🌇'],
-  [19, 22, 'ពេលយប់ សម្រាកតូចតាច 🌙',          'Soirée tranquille 🌙'],
-  [22,  5, 'ម៉ោងគេងហើយ សុំកុំផ្ញើសារ 😉',      'Tout le monde dort… chut 😉']
+  [14, 17, 'រសៀលល្អ តោះបន្តការងារ ☀️',            'Bel après-midi ☀️'],
+  [17, 19, 'ថ្ងៃលិចហើយ ដល់ពេលបាយល្ងាច 🌇',         'Le soleil se couche, c\'est l\'heure du dîner 🌇'],
+  [19, 22, 'ពេលយប់ សម្រាកលំហែ 🌙',          'Soirée tranquille 🌙'],
+  [22,  5, 'គ្រប់គ្នាកំពុងគេងហើយ… ស្ងាត់ៗណា 😉',      'Tout le monde dort… chut 😉']
 ];
 
 /* Weather codes Open-Meteo -> [emoji, fr, km] */
