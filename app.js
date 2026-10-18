@@ -182,7 +182,11 @@ function showGap(){
   if (el) el.innerHTML = '<span class="fi fi-kh"></span> = <span class="fi fi-fr"></span> <b>+' + (g/60) + 'h</b>';
 }
 
-/* Météo Open-Meteo (gratuite, sans clé, CORS ouvert) + cache 10 min */
+/* Météo Open-Meteo (gratuite, sans clé, CORS ouvert) + cache + offline :
+   - échec  -> nouvelle tentative à 2s (backoff x2, plafond 30s)
+   - succès -> prochaine synchro dans 10 min (l'API ne rafraîchit pas plus vite)
+   - retour du réseau -> synchro immédiate */
+var fetchTimer = null, backoff = 2000;
 function paint(k){
   var st = state[k] || {}, wx = wxLabel(st.code);
   if (st.code != null) document.getElementById('wx-'+k).textContent = wx[0] + ' ' + wx[2];
@@ -197,11 +201,25 @@ function apply(all){
   var up = document.getElementById('updated');
   if (up) up.textContent = 'Météo & soleils : Open-Meteo · màj ' + fmt('Europe/Paris', {hour:'2-digit', minute:'2-digit'}) + ' (Paris)';
 }
+function scheduleFetch(ok){
+  var delay = ok ? 10*60*1000 : backoff;
+  backoff = ok ? 2000 : Math.min(backoff*2, 30000);
+  clearTimeout(fetchTimer);
+  fetchTimer = setTimeout(fetchWeather, delay);
+}
+function setNet(ok){
+  var el = document.getElementById('net');
+  if (el) el.innerHTML = ok ? '' : '📡 hors ligne — heures exactes, météo en cache';
+}
 function fetchWeather(){
   var cached = null;
   try { cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); } catch(e){}
-  if (cached && Date.now() - cached.at < 10*60*1000){ apply(cached); return; }
-  var done = 0, fresh = { at: Date.now(), fr: {}, kh: {} };
+  if (cached){
+    state = cached;
+    ['fr','kh'].forEach(paint);   /* météo en cache : mieux que rien, même périmée */
+  }
+  if (navigator.onLine === false){ setNet(false); scheduleFetch(false); return; }
+  var done = 0, fresh = { at: Date.now(), fr: {}, kh: {} }, failed = false;
   ['fr','kh'].forEach(function(k){
     var p = PLACES[k];
     var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + p.lat + '&longitude=' + p.lon
@@ -215,13 +233,16 @@ function fetchWeather(){
       if (++done === 2){
         try { localStorage.setItem(CACHE_KEY, JSON.stringify(fresh)); } catch(e){}
         apply(fresh);
+        setNet(true); scheduleFetch(true);
       }
     }).catch(function(){
-      if (++done === 2){ if (cached) apply(cached); }
+      failed = true;
+      if (++done === 2){ setNet(false); scheduleFetch(false); }
     });
   });
-  if (cached){ state = cached; ['fr','kh'].forEach(paint); }
 }
+window.addEventListener('online', function(){ clearTimeout(fetchTimer); fetchWeather(); });
+window.addEventListener('offline', function(){ setNet(false); });
 
 /* Boot */
 makeStars('fr'); makeStars('kh');
@@ -229,7 +250,6 @@ updatePlace('fr'); updatePlace('kh');
 showGap();
 setInterval(function(){ updatePlace('fr'); updatePlace('kh'); }, 1000);
 setInterval(showGap, 60000);
-fetchWeather();
-setInterval(fetchWeather, 10*60*1000);
+fetchWeather();   /* le scheduler interne gère les retries et le rythme */
 })();
 
