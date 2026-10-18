@@ -77,6 +77,10 @@ main{ flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; max-wi
   overflow:hidden; margin-top:8px; }
 .sunpath{ flex:none; width:96px; height:64px; }
 .sunpath circle{ filter:drop-shadow(0 0 5px rgba(242,188,116,.7)); }
+/* nuit : le parcours doré devient un parcours de lune, argenté */
+.sunpath.night path{ stroke:#aeb6d6; opacity:.7; }
+.sunpath.night circle{ fill:#e8ecf7;
+  filter:drop-shadow(0 0 6px rgba(203,211,238,.85)); }
 .status-text{ flex:1; min-width:0; }
 .status{ color:#96742c; font-size:1.22rem; line-height:1.6; font-weight:600; }
 .status-fr{ font-family:var(--hand); color:var(--dim); font-size:1.3rem; line-height:1.15; }
