@@ -11,6 +11,8 @@ Site statique **public** — les heures, la météo et les levers/couchers de so
 
 - 🕐 Horloges en direct des deux endroits (fuseaux `Europe/Paris` / `Asia/Phnom_Penh`), avec secondes
 - 🌤️ **Météo en direct** via l'API [Open-Meteo](https://open-meteo.com) (gratuite, sans clé) : température, conditions (emoji + libellé khmer)
+- ⏳ **Prévisions des 8 prochaines heures** pour chaque ville : heure locale, emoji, température, probabilité de pluie (💧 affichée à partir de 30 %) — même appel Open-Meteo, aucune clé supplémentaire
+- ✈️ **Distance et temps de vol** entre les deux villes (9 892 km à vol d'oiseau, ~11 h), affichés près de l'avion
 - 🌅/🌇 **Heures de lever et coucher du soleil** pour chaque ville, façon montre connectée
 - 🎨 Ciel animé par carte : dégradé qui suit l'heure **locale** de chaque endroit (aube, matin, jour, coucher, crépuscule, nuit), soleil qui parcourt son arc en temps réel, lune et étoiles scintillantes la nuit, nuages qui défilent
 - 💬 Statuts contextuels bilingues khmer/français (« ម៉ោងគេងហើយ 😴 / Il est l'heure de dormir »)
@@ -18,16 +20,12 @@ Site statique **public** — les heures, la météo et les levers/couchers de so
 
 ## Stack
 
-HTML + CSS + JS **purs**, zéro dépendance, zéro build. Le seul appel externe est l'API Open-Meteo (CORS ouvert, 15 min de rafraîchissement).
+HTML + CSS + JS **purs**, zéro dépendance, zéro build. Le seul appel externe est l'API Open-Meteo (CORS ouvert, rafraîchie toutes les 10 min).
 
 ## Déploiement
 
-Le site est servi par Caddy sur **chetbox** (VM Scaleway) via le bloc générique des sites statiques :
+Le site est servi par Caddy sur **chetbox** (VM Scaleway) et publié par **GitHub Actions** (workflow `.github/workflows/ci.yml`) :
 
-```bash
-# publier = déposer le dossier dans /srv/static/sites/
-ssh root@chetbox "rm -rf /srv/static/sites/soleils && mkdir -p /srv/static/sites/soleils"
-scp -r index.html style.css app.js root@chetbox:/srv/static/sites/soleils/
-```
-
-`soleils.chetana.fr` sert automatiquement `/srv/static/sites/soleils/` (voir `infra/box/Caddyfile` du repo `chet-workspace`).
+- push sur `main` → publication sur chetbox (clé SSH dédiée, environnement `prod` qui attend l'approbation)
+- à chaque changement d'assets : bumper `?v=N` de `style.css` / `app.js` dans `index.html` **et** le `CACHE` de `sw.js`
+- rollback : onglet Actions → « Run workflow » (revenir à la version précédente)
