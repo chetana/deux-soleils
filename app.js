@@ -34,7 +34,7 @@ var WX = {
 
 var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 var state = { fr:{}, kh:{} };
-var CACHE_KEY = 'deux-soleils-v2';
+var CACHE_KEY = 'deux-soleils-v3';
 
 function fmt(tz, opts, d){
   try { return new Intl.DateTimeFormat('fr-FR', Object.assign({timeZone:tz}, opts)).format(d || new Date()); }
@@ -185,6 +185,37 @@ function showGap(){
   if (el) el.innerHTML = '<span class="fi fi-kh"></span> = <span class="fi fi-fr"></span> <b>+' + (g/60) + 'h</b>';
 }
 
+/* Distance à vol d'oiseau entre les deux villes + temps de vol approximatif (coordonnées fixes, calculé une fois) */
+function showDist(){
+  var el = document.getElementById('distline');
+  if (!el) return;
+  var R = 6371, rad = Math.PI / 180;
+  var f = PLACES.fr, c = PLACES.kh;
+  var dLa = (c.lat - f.lat) * rad, dLo = (c.lon - f.lon) * rad;
+  var a = Math.sin(dLa/2) * Math.sin(dLa/2) + Math.cos(f.lat * rad) * Math.cos(c.lat * rad) * Math.sin(dLo/2) * Math.sin(dLo/2);
+  var km = Math.round(2 * R * Math.asin(Math.sqrt(a)));
+  el.innerHTML = '<b>' + km.toLocaleString('fr-FR') + ' km</b> · ✈️ ~11 h';
+}
+
+/* Prévisions des 8 prochaines heures — mêmes données Open-Meteo (times déjà à l'heure locale du lieu) */
+function pickHours(j, tz){
+  var h = j.hourly;
+  if (!h || !h.time || !h.temperature_2m) return null;
+  var parts = new Intl.DateTimeFormat('en-GB', {timeZone:tz, hour12:false,
+    year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit'}).formatToParts(new Date());
+  var o = {}; parts.forEach(function(p){ o[p.type] = p.value; });
+  var key = o.year + '-' + o.month + '-' + o.day + 'T' + ('0' + (o.hour % 24)).slice(-2);
+  var i0 = 0;
+  for (var i = 0; i < h.time.length; i++){ if (h.time[i].slice(0, 13) === key){ i0 = i; break; } }
+  var out = [];
+  for (var n = 0; n < 8 && i0 + n < h.time.length; n++){
+    var t = h.time[i0 + n], r = h.precipitation_probability ? h.precipitation_probability[i0 + n] : null;
+    out.push({ h: t.slice(11, 13) + 'h', e: wxLabel(h.weather_code[i0 + n])[0],
+      t: Math.round(h.temperature_2m[i0 + n]), r: (r == null ? null : Math.round(r)) });
+  }
+  return out.length ? out : null;
+}
+
 /* Météo Open-Meteo (gratuite, sans clé, CORS ouvert) + cache + offline :
    - échec  -> nouvelle tentative à 2s (backoff x2, plafond 30s)
    - succès -> prochaine synchro dans 10 min (l'API ne rafraîchit pas plus vite)
@@ -196,13 +227,25 @@ function paint(k){
   document.getElementById('temp-'+k).textContent = st.temp != null ? Math.round(st.temp) + '°C' : '—';
   document.getElementById('rise-'+k).textContent = minsToHM(st.rise);
   document.getElementById('set-'+k).textContent  = minsToHM(st.set);
+  var hb = document.getElementById('hrow-' + k), hbox = document.getElementById('hours-' + k);
+  if (hb && hbox && st.hours && st.hours.length){
+    var chips = '';
+    for (var i = 0; i < st.hours.length; i++){
+      var c = st.hours[i];
+      chips += '<span class="hchip' + (i === 0 ? ' now' : '') + '"><b>' + c.h + '</b>'
+        + '<span class="he">' + c.e + '</span><i>' + c.t + '°</i>'
+        + (c.r != null && c.r >= 30 ? '<em>💧' + c.r + '%</em>' : '') + '</span>';
+    }
+    hb.innerHTML = chips;
+    hbox.classList.add('on');
+  }
   weatherFx(k);
 }
 function apply(all){
   state = all;
   ['fr','kh'].forEach(paint);
   var up = document.getElementById('updated');
-  if (up) up.textContent = 'Météo & soleils : Open-Meteo · màj ' + fmt('Europe/Paris', {hour:'2-digit', minute:'2-digit'}) + ' (Paris)';
+  if (up) up.textContent = 'Météo, soleils & prévisions : Open-Meteo · màj ' + fmt('Europe/Paris', {hour:'2-digit', minute:'2-digit'}) + ' (Paris)';
 }
 function scheduleFetch(ok){
   var delay = ok ? 10*60*1000 : backoff;
@@ -226,12 +269,14 @@ function fetchWeather(){
   ['fr','kh'].forEach(function(k){
     var p = PLACES[k];
     var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + p.lat + '&longitude=' + p.lon
-      + '&current=temperature_2m,weather_code,is_day&daily=sunrise,sunset&timezone=auto&forecast_days=1';
+      + '&current=temperature_2m,weather_code,is_day&daily=sunrise,sunset'
+      + '&hourly=temperature_2m,weather_code,precipitation_probability&forecast_days=2&timezone=auto';
     fetch(url).then(function(r){ return r.json(); }).then(function(j){
       var cur = j.current || {}, day = j.daily || {};
       fresh[k] = {
         temp: cur.temperature_2m, code: cur.weather_code, isDay: cur.is_day === 1,
-        rise: parseHM((day.sunrise || [])[0]), set: parseHM((day.sunset || [])[0])
+        rise: parseHM((day.sunrise || [])[0]), set: parseHM((day.sunset || [])[0]),
+        hours: pickHours(j, p.tz)
       };
       if (++done === 2){
         try { localStorage.setItem(CACHE_KEY, JSON.stringify(fresh)); } catch(e){}
@@ -256,6 +301,7 @@ if ('serviceWorker' in navigator) {
 makeStars('fr'); makeStars('kh');
 updatePlace('fr'); updatePlace('kh');
 showGap();
+showDist();
 setInterval(function(){ updatePlace('fr'); updatePlace('kh'); }, 1000);
 setInterval(showGap, 60000);
 fetchWeather();   /* le scheduler interne gère les retries et le rythme */
