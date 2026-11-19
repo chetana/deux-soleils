@@ -106,9 +106,29 @@ main{ flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; max-wi
 .netstatus{ font-family:system-ui,sans-serif; font-size:.78rem; color:var(--dim);
   background:rgba(255,240,220,.8); border:1px dashed var(--pink);
   border-radius:99px; padding:2px 9px; }
+.netstatus:empty{ display:none; }
 .link{ flex-wrap:wrap; }
 .gapline b{ color:var(--gold); }
 .gapline .fi{ width:1.1em; height:.8em; border-radius:2px; }
+.distline{ color:var(--dim); font-size:.92rem; font-weight:600; display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
+.distline b{ color:var(--pink2); }
+
+/* prévisions des 8 prochaines heures : chips horizontales, scroll silencieux */
+.hours{ flex:none; display:none; align-items:center; gap:8px; margin-top:7px; min-width:0;
+  background:rgba(255,253,250,.8); border:1px solid var(--line); border-radius:12px;
+  padding:4px 6px 4px 12px; box-shadow:0 1px 3px rgba(30,60,110,.08); }
+.hours.on{ display:flex; }
+.hours .mi-label{ flex:none; }
+.hrow{ flex:1; min-width:0; display:flex; gap:3px; overflow-x:auto; scrollbar-width:none; }
+.hrow::-webkit-scrollbar{ display:none; }
+.hchip{ flex:none; display:flex; flex-direction:column; align-items:center; padding:2px 6px; border-radius:9px; }
+.hchip b{ font-family:system-ui,sans-serif; font-variant-numeric:tabular-nums;
+  font-size:.68rem; font-weight:700; color:var(--dim); line-height:1.3; }
+.hchip .he{ font-size:.95rem; line-height:1.15; }
+.hchip i{ font-style:normal; font-family:system-ui,sans-serif; font-variant-numeric:tabular-nums;
+  font-size:.76rem; font-weight:700; color:var(--txt); line-height:1.3; }
+.hchip em{ font-style:normal; font-size:.6rem; font-weight:600; color:#4f7fc0; line-height:1.2; }
+.hchip.now{ background:rgba(217,143,174,.16); box-shadow:inset 0 0 0 1px rgba(217,143,174,.45); }
 
 footer{ display:none; }
 footer .src{ font-size:.7rem; opacity:.7; margin-left:6px; }
@@ -127,6 +147,12 @@ footer .src{ font-size:.7rem; opacity:.7; margin-left:6px; }
   .mi-val{ font-size:1.3rem }
   .link{ flex-direction:column; flex:0 0 120px; justify-content:center; }
   .gapline{ flex-direction:column; text-align:center; }
+  .hours{ gap:10px; padding:6px 10px 6px 14px; }
+  .hchip b{ font-size:.8rem; }
+  .hchip .he{ font-size:1.1rem; }
+  .hchip i{ font-size:.9rem; }
+  .hchip em{ font-size:.68rem; }
+  .distline{ font-size:1rem; }
 }
 
 /* ---------- Effet pastel / dessin à la craie ---------- */
@@ -182,4 +208,9 @@ body::after{ content:''; position:fixed; inset:0; z-index:999;
 
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01s !important; animation-iteration-count:1 !important; transition:none !important}
+}
+
+/* écrans très bas : on redonne la place aux horloges et aux soleils */
+@media (max-height:620px){
+  .hours{ display:none !important; }
 }
