@@ -1,0 +1,47 @@
+name: ci
+# Push sur main : publication, qui attend l'approbation de l'environnement prod.
+# Retour arrière : Run workflow (revient à la version précédente). Pensez à bumper ?v=N et le CACHE de sw.js.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publier sur chetbox
+        env:
+          SSH_KEY: ${{ secrets.CHETBOX_DEPLOY_KEY }}
+          KNOWN_HOSTS: ${{ secrets.CHETBOX_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id; chmod 600 ~/.ssh/id
+          OUT=$(mktemp -d)
+          for f in index.html app.js style.css sw.js manifest.json icon-192.png icon-512.png robots.txt og.jpg og-2026.jpg og-v2.jpg; do
+            [ -f "$f" ] && cp "$f" "$OUT/"
+          done
+          chmod 755 "$OUT"
+          tar -C "$OUT" -cz . | ssh -i ~/.ssh/id -o BatchMode=yes -o IdentitiesOnly=yes root@163.172.7.239 deploy
+
+  rollback:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Revenir à la version précédente
+        env:
+          SSH_KEY: ${{ secrets.CHETBOX_DEPLOY_KEY }}
+          KNOWN_HOSTS: ${{ secrets.CHETBOX_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id; chmod 600 ~/.ssh/id
+          ssh -i ~/.ssh/id -o BatchMode=yes -o IdentitiesOnly=yes root@163.172.7.239 rollback
